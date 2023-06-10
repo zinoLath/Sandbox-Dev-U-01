@@ -17,7 +17,7 @@ public class PlayerBase : MonoBehaviour, IPlayerActions
     protected float _focusedSpeed;
     protected float _speed;
     private Vector2 _inputVec;
-    public bool canShoot;
+    public bool canShoot; //public pq tem outras coisas q precisa mudar (que nem diálogo e etc)
     public bool canBomb;
     public bool canFlashbomb;
     void Start()
@@ -70,7 +70,16 @@ public class PlayerBase : MonoBehaviour, IPlayerActions
 
     private void HandleShoot()
     {
-        if(canShoot) this.Shoot();
+        if(canShoot)
+        {
+            this.Shoot();
+            if(transform.childCount == 0) return;
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                IPlayerActions childActions = transform.GetChild(i).GetComponent(typeof(IPlayerActions)) as IPlayerActions;
+                childActions.Shoot();
+            }
+        }
     }
     public virtual void Shoot()
     {
@@ -78,7 +87,16 @@ public class PlayerBase : MonoBehaviour, IPlayerActions
     }
     private void HandleBomb()
     {
-        if (canBomb) this.Bomb();
+        if(canBomb)
+        {
+            this.Bomb();
+            if(transform.childCount == 0) return;
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                IPlayerActions childActions = transform.GetChild(i).GetComponent(typeof(IPlayerActions)) as IPlayerActions;
+                childActions.Bomb();
+            }
+        }
     }
     public virtual void Bomb()
     {
@@ -86,7 +104,16 @@ public class PlayerBase : MonoBehaviour, IPlayerActions
     }
     private void HandleFlashbomb()
     {
-        if (canFlashbomb) this.Flashbomb();
+        if(canFlashbomb)
+        {
+            this.Flashbomb();
+            if(transform.childCount == 0) return;
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                IPlayerActions childActions = transform.GetChild(i).GetComponent(typeof(IPlayerActions)) as IPlayerActions;
+                childActions.Flashbomb();
+            }
+        }
     }
     public virtual void Flashbomb()
     {
