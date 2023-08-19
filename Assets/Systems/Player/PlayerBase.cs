@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public interface IPlayerActions 
 {
@@ -20,32 +21,16 @@ public class PlayerBase : MonoBehaviour, IPlayerActions
     public bool canShoot; //public pq tem outras coisas q precisa mudar (que nem diálogo e etc)
     public bool canBomb;
     public bool canFlashbomb;
+    public bool isFocus;
     void Start()
     {
         SetPlayerProperties();
+
     }
 
     void Update()
     {
-        _inputVec = new Vector2(Input.GetAxisRaw("Horizontal"),Input.GetAxisRaw("Vertical"));
-        if (Input.GetButton("Shoot"))
-        {
-            HandleShoot();
-        }
-        if (Input.GetButton("Bomb"))
-        {
-            HandleBomb();
-        }
-        if (Input.GetButton("Flashbomb"))
-        {
-            HandleFlashbomb();
-        }
-
-        _speed = _unfocusedSpeed;
-        if (Input.GetButton("Focus"))
-        {
-            _speed = _focusedSpeed;
-        }
+        _speed = isFocus ? _focusedSpeed : _unfocusedSpeed;
     }
 
     void FixedUpdate()
@@ -66,6 +51,28 @@ public class PlayerBase : MonoBehaviour, IPlayerActions
     {
         input = Vector2.ClampMagnitude(input, 1) * _speed * Time.fixedDeltaTime;
         transform.position += new Vector3(input.x, input.y,0);
+    }
+    private void OnMove(InputValue input)
+    {
+        Vector2 movementVector = input.Get<Vector2>();
+    
+        _inputVec = movementVector;
+    }
+    private void OnShoot()
+    {
+        HandleShoot();
+    }
+    private void OnBomb()
+    {
+        HandleBomb();
+    }
+    private void OnFlashbomb()
+    {
+        HandleFlashbomb();
+    }
+    private void OnFocus(InputValue input)
+    {
+        isFocus = input.Get<float>() > 0;
     }
 
     private void HandleShoot()
