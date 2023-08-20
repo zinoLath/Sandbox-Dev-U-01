@@ -17,11 +17,17 @@ public class PlayerBase : MonoBehaviour, IPlayerActions
     protected float _unfocusedSpeed;
     protected float _focusedSpeed;
     protected float _speed;
+    public int life = 6;
     private Vector2 _inputVec;
-    public bool canShoot; //public pq tem outras coisas q precisa mudar (que nem diálogo e etc)
+    public bool canShoot;
     public bool canBomb;
     public bool canFlashbomb;
     public bool isFocus;
+    private void Awake()
+    {
+        GameManager.onPlayerDeath += OnPlayerDeath;
+    }
+
     void Start()
     {
         SetPlayerProperties();
@@ -125,5 +131,10 @@ public class PlayerBase : MonoBehaviour, IPlayerActions
     public virtual void Flashbomb()
     {
         
+    }
+
+    private void OnPlayerDeath()
+    {
+        life--;
     }
 }

@@ -12,6 +12,12 @@ namespace ZinoLIB.UI
         [Range(0,10)]
         public int count;
         public List<HUDIcon> objList;
+        public PlayerBase player;
+        private void Awake()
+        {
+            GameManager.onPlayerDeath += OnPlayerDeath;
+            value = player.life;
+        }
         void Start()
         {
             if (objList != null && objList.Count > 0)
@@ -36,6 +42,11 @@ namespace ZinoLIB.UI
             {
                 objList[i].value = Mathf.Clamp(value-i,0,1);
             }
+        }
+
+        void OnPlayerDeath()
+        {
+            value = player.life;
         }
     }
 
