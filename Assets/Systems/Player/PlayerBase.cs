@@ -17,7 +17,6 @@ public class PlayerBase : MonoBehaviour, IPlayerActions
     protected float _unfocusedSpeed;
     protected float _focusedSpeed;
     protected float _speed;
-    public int life = 6;
     private Vector2 _inputVec;
     public bool canShoot;
     public bool canBomb;
@@ -91,6 +90,7 @@ public class PlayerBase : MonoBehaviour, IPlayerActions
             {
                 IPlayerActions childActions = transform.GetChild(i).GetComponent(typeof(IPlayerActions)) as IPlayerActions;
                 childActions.Shoot();
+                GameManager.instance.score += 10;
             }
         }
     }
@@ -135,6 +135,6 @@ public class PlayerBase : MonoBehaviour, IPlayerActions
 
     private void OnPlayerDeath()
     {
-        life--;
+        GameManager.instance.lifeCount--;
     }
 }
